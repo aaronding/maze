@@ -1,0 +1,22 @@
+{
+  "name": "maze",
+  "version": "1.0.0",
+  "description": "",
+  "main": "maze.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/aaronding/maze.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/aaronding/maze/issues"
+  },
+  "homepage": "https://github.com/aaronding/maze#readme",
+  "dependencies": {
+    "cli-color": "^1.1.0"
+  }
+}
