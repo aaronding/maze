@@ -2,31 +2,37 @@
 
 let mazeData = require('./mazeData.js'),
   maze = mazeData.maze,
+  mazeHeight = maze.length,
+  mazeWidth = maze[0].length,
   start = mazeData.start;
 
-var
-  isExit = position => {
-    return position[0] === 0 || position[1] === 0;
-  },
-  isAvailable = position => {
-    return maze[position[1], position[0]] === 1;
-  },
-  goUp = ()=> {
+var nextStep = (x, y) => {
+  let available = false;
 
-  },
-  goDown = ()=> {
+  console.log(x, y, maze[y][x]);
 
-  },
-  goLeft = ()=> {
+  if (maze[y][x] === 0) {
+    if (x === 0 || y === 0 || x === mazeWidth - 1 || y === mazeHeight - 1) {
+      console.log('found');
+      return false;
+    }
 
-  },
-  goRight = ()=> {
+    maze[y][x] = 1;
+    if (nextStep(x + 1, y)) {
+      available = true;
+    } else if (nextStep(x, y + 1)) {
+      available = true;
+    } else if (nextStep(x - 1, y)) {
+      available = true;
+    } else if (nextStep(x, y - 1)) {
+      available = true;
+    }
+  }
 
-  };
+  return available;
+};
 
-do {
+debugger;
+nextStep(start.x, start.y);
 
-} while ();
-while(maze[start[0], start[1]]) {
-
-}
+console.log('done');
