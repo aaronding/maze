@@ -1,68 +1,45 @@
-'use strict';
+class Maze {
+  constructor(matrix, start) {
+    this.matrix = matrix;
+    this.currentPosition = start;
 
-var clc = require('cli-color'),
-  mazeData = require('./mazeData.js'),
-  maze = mazeData.maze,
-  mazeHeight = maze.length,
-  mazeWidth = maze[0].length,
-  start = mazeData.start,
-  paths = {};
-
-var nextStep = (x, y) => {
-  let available = false;
-
-  if (maze[y][x] === 0) {
-    paths[x + '-' + y] = { x: x, y: y};
-
-    if (x === 0 || y === 0 || x === mazeWidth - 1 || y === mazeHeight - 1) {
-      return false;
-    }
-
-    maze[y][x] = 2;
-    if (nextStep(x + 1, y)) {
-      available = true;
-    } else if (nextStep(x, y + 1)) {
-      available = true;
-    } else if (nextStep(x - 1, y)) {
-      available = true;
-    } else if (nextStep(x, y - 1)) {
-      available = true;
-    }
+    this.mazeHeight = matrix.length;
+    this.mazeWidth = matrix[0].length;
   }
 
-  return available;
-};
+  isExit() {
+    var currentPosition = this.currentPosition,
+      x = currentPosition.x,
+      y = currentPosition.y;
 
-console.time('step');
-nextStep(start.x, start.y);
-console.timeEnd('step');
+    return x === 0 || y === 0 ||
+      x === this.mazeWidth - 1 || y === this.mazeHeight - 1;
+  }
 
-var map = '';
-for (let y = 0; y < mazeHeight; y++) {
-  let row = '';
-  for (let x = 0; x < mazeWidth; x++) {
-    let value = maze[y][x];
-    if (x === start.x && y === start.y) {
-      value = clc.red('S');
-    } else {
-      if (paths[x + '-' + y]) {
-        if (x === 0 || y === 0 || x === mazeWidth - 1 || y === mazeHeight - 1) {
-          value = clc.green('X');
-        } else {
-          value = clc.green('.');
-        }
-      } else {
-        if (value === 2 || value === 0) {
-          value = ' ';
-        } else {
-          value = '*';
-        }
-      }
+  isAvailable(direction) {
+    var next = this.nextPosition(this.currentPosition, direction);
+    return this.matrix[next.y][next.x] === 0;
+  }
+
+  nextPosition(currentPosition, direction) {
+    var x = currentPosition.x,
+      y = currentPosition.y;
+
+    if (direction == 'e') {
+      x += 1;
+    } else if (direction == 's') {
+      y += 1;
+    } else if (direction == 'w') {
+      x -= 1;
+    } else if (direction == 'n') {
+      y -= 1;
     }
 
-    row += value + ' ';
+    return {
+      x: x,
+      y: y
+    };
   }
-  map += row + '\n';
 }
 
-console.log(map);
+module.exports = Maze;
