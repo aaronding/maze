@@ -18,20 +18,35 @@ class Mouse {
 
   check(availableDirections) {
     var step = this.getCurrentStep();
-    step.availableDirections = availableDirections;
+    if (!step.availableDirections) {
+      step.availableDirections = availableDirections;
+    }
   }
 
   nextStep() {
     var step = this.getCurrentStep(),
       directions = step.availableDirections,
       direction;
-    for (direction in directions) {
-      if (directions[direction] && direction !== this.from) {
-        directions[direction] = false;
+    for (let dir in directions) {
+      if (directions[dir] && dir !== step.from) {
+        directions[dir] = false;
+        direction = dir;
         break;
       }
     }
     return direction;
+  }
+
+  getOppositeDirection(direction) {
+    if (direction === 'e') {
+      return 'w'
+    } else if (direction === 'w') {
+      return 'e'
+    } else if (direction === 's') {
+      return 'n'
+    } else if (direction === 'n') {
+      return 's'
+    }
   }
 
   go(direction) {
@@ -39,12 +54,13 @@ class Mouse {
     step.to = direction;
 
     let nextStep = new Step();
-    nextStep.from = direction;
+    nextStep.from = this.getOppositeDirection(direction);
     this.history.push(nextStep);
   }
 
   back() {
-
+    let step = this.history.pop();
+    return step.from;
   }
 }
 

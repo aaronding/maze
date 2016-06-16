@@ -5,6 +5,8 @@ var Game = require('./game.js'),
 
 console.log('game started');
 
+console.time('game ended');
+
 new Game(mazeData.maze, mazeData.start).start();
 
-console.log('game ended');
+console.timeEnd('game ended');

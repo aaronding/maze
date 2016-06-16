@@ -1,7 +1,11 @@
 class Maze {
   constructor(matrix, start) {
     this.matrix = matrix;
-    this.currentPosition = start;
+    this.start = start;
+    this.currentPosition = {
+      x: start.x,
+      y: start.y
+    };
 
     this.mazeHeight = matrix.length;
     this.mazeWidth = matrix[0].length;
@@ -14,11 +18,6 @@ class Maze {
 
     return x === 0 || y === 0 ||
       x === this.mazeWidth - 1 || y === this.mazeHeight - 1;
-  }
-
-  isAvailable(direction) {
-    var next = this.nextPosition(this.currentPosition, direction);
-    return this.matrix[next.y][next.x] === 0;
   }
 
   changePosition(direction) {
@@ -42,34 +41,45 @@ class Maze {
       ret = {};
     if (matrix[y][x + 1] === 0) {
       ret.e = true;
-    } else if (matrix[y + 1][x] === 0) {
+    }
+    if (matrix[y + 1][x] === 0) {
       ret.s = true;
-    } else if (matrix[y][x - 1] === 0) {
+    }
+    if (matrix[y][x - 1] === 0) {
       ret.w = true;
-    } else if (matrix[y - 1][x] === 0) {
+    }
+    if (matrix[y - 1][x] === 0) {
       ret.n = true;
     }
     return ret;
   }
 
-  nextPosition(currentPosition, direction) {
-    var x = currentPosition.x,
-      y = currentPosition.y;
+  print() {
+    let map = '',
+      clc = require('cli-color');
+    for (let y = 0; y < this.mazeHeight; y++) {
+      let row = '';
+      for (let x = 0; x < this.mazeWidth; x++) {
+        let value = this.matrix[y][x];
+        if (x === this.start.x && y === this.start.y) {
+          value = clc.red('S');
+        } else if (x === this.currentPosition.x && y === this.currentPosition.y) {
+          value = clc.yellow('@');
+        } else {
+          if (value === 0) {
+            value = ' ';
+          } else {
+            value = '*';
+          }
+        }
 
-    if (direction == 'e') {
-      x += 1;
-    } else if (direction == 's') {
-      y += 1;
-    } else if (direction == 'w') {
-      x -= 1;
-    } else if (direction == 'n') {
-      y -= 1;
+        row += value + ' ';
+      }
+      map += row + '\n';
     }
 
-    return {
-      x: x,
-      y: y
-    };
+    console.log(map);
+    process.stdout.write(clc.move.to(0, 0));
   }
 }
 

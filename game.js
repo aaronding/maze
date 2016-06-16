@@ -18,14 +18,16 @@ class Game {
       let direction = mouse.nextStep();
 
       if (direction) {
+        console.log('===== go   ' + direction)
         mouse.go(direction);
         maze.changePosition(direction);
 
-        console.log('===== go')
+        if (maze.isExit()) {
+          break;
+        }
       } else {
-
-        console.log('===== back ')
         direction = mouse.back();
+        console.log('===== back ' + direction);
         if (direction) {
           maze.changePosition(direction);
         } else {
@@ -33,8 +35,8 @@ class Game {
         }
       }
 
-      console.log('=====')
-      sleep.usleep(100000);
+      sleep.usleep(1000000);
+      maze.print();
     }
   }
 }
