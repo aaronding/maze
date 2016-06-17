@@ -12,29 +12,26 @@ class Game {
     var maze = this.maze,
       mouse = this.mouse;
 
-    process.stdout.write(clc.reset);
+    process.stdout.write(require('cli-color').reset);
     //process.stdout.write(require('cli-color').move.to(0, 0));
 
     while (true) {
       let direction = mouse.findNextStep(maze.getAvailableDirections(mouse.currentPosition));
 
       if (direction) {
-        console.log('===== go   ' + direction);
         mouse.go(direction);
 
         if (maze.isExit(mouse.currentPosition)) {
           mouse.foundExit();
-          //break;
         }
       } else {
         direction = mouse.back();
-        console.log('===== back ' + direction);
         if (!direction) {
           break;
         }
       }
 
-      sleep.usleep(200000);
+      sleep.usleep(1000000);
       this.print(this.maze);
     }
   }
@@ -47,6 +44,9 @@ class Game {
       mouse = this.mouse,
       map = '',
       clc = require('cli-color');
+
+    process.stdout.write(clc.move.to(0, 0));
+
     for (let y = 0; y < mazeHeight; y++) {
       let row = '';
       for (let x = 0; x < mazeWidth; x++) {
@@ -54,22 +54,21 @@ class Game {
         if (x === start.x && y === start.y) {
           value = clc.red('S');
         } else if (x === mouse.currentPosition.x+start.x && y === mouse.currentPosition.y + start.y) {
-          value = clc.yellow('@');
+          value = clc.greenBright('@');
         } else {
           if (value === 0) {
             value = ' ';
           } else {
-            value = '*';
+            value = '\u2591';
           }
         }
 
-        row += value + ' ';
+        row += value + '';
       }
       map += row + '\n';
     }
 
     console.log(map);
-    process.stdout.write(clc.move.to(0, 0));
   }
 }
 

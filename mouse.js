@@ -24,14 +24,20 @@ class Mouse {
     this.visited.push(this.currentPosition.x + '-' + this.currentPosition.y);
 
     this.history.push(direction);
-    this.traces.push(direction);
+    this.traces.push({
+      dir: direction,
+      type: 'go'
+    });
   }
 
   back() {
     let dir = this.history.pop();
     if (dir) {
       this.currentPosition = this.getNextPosition(this.currentPosition, this.getOppositeDirection(dir));
-      this.traces.push(dir);
+      this.traces.push({
+        dir: dir,
+        type: 'back'
+      });
     }
     return dir;
   }
