@@ -1,40 +1,66 @@
-class Step {
-  constructor(availableDirections) {
-    this.from = null;
-    this.to = null;
-    this.availableDirections = availableDirections;
-  }
-}
-
 class Mouse {
   constructor() {
+    this.traces = [];
     this.history = [];
-    this.history.push(new Step());
+
+    this.currentPosition = {x: 0, y: 0};
+    this.visited = ['0-0'];
+
+    this.exit = [];
   }
 
-  getCurrentStep() {
-    return this.history[this.history.length - 1];
-  }
-
-  check(availableDirections) {
-    var step = this.getCurrentStep();
-    if (!step.availableDirections) {
-      step.availableDirections = availableDirections;
-    }
-  }
-
-  nextStep() {
-    var step = this.getCurrentStep(),
-      directions = step.availableDirections,
-      direction;
-    for (let dir in directions) {
-      if (directions[dir] && dir !== step.from) {
-        directions[dir] = false;
-        direction = dir;
-        break;
+  findNextStep(availableDirections) {
+    for (let i=0; i<availableDirections.length; i++) {
+      let dir = availableDirections[i];
+      let next = this.getNextPosition(this.currentPosition, dir);
+      if (!this.hasVisitied(next)) {
+        return dir;
       }
     }
-    return direction;
+  }
+
+  go(direction) {
+    this.currentPosition = this.getNextPosition(this.currentPosition, direction);
+    this.visited.push(this.currentPosition.x + '-' + this.currentPosition.y);
+
+    this.history.push(direction);
+    this.traces.push(direction);
+  }
+
+  back() {
+    let dir = this.history.pop();
+    if (dir) {
+      this.currentPosition = this.getNextPosition(this.currentPosition, this.getOppositeDirection(dir));
+      this.traces.push(dir);
+    }
+    return dir;
+  }
+
+  foundExit() {
+    this.exit.push(this.currentPosition);
+  }
+
+  getNextPosition(position, direction) {
+    var ret = {
+      x: position.x,
+      y: position.y
+    };
+
+    if (direction === 'e') {
+      ret.x += 1;
+    } else if (direction === 'w') {
+      ret.x -= 1;
+    } else if (direction === 's') {
+      ret.y += 1;
+    } else if (direction === 'n') {
+      ret.y -= 1;
+    }
+
+    return ret;
+  }
+
+  hasVisitied(position) {
+    return this.visited.indexOf(position.x + '-' + position.y) > -1;
   }
 
   getOppositeDirection(direction) {
@@ -47,20 +73,6 @@ class Mouse {
     } else if (direction === 'n') {
       return 's'
     }
-  }
-
-  go(direction) {
-    var step = this.getCurrentStep();
-    step.to = direction;
-
-    let nextStep = new Step();
-    nextStep.from = this.getOppositeDirection(direction);
-    this.history.push(nextStep);
-  }
-
-  back() {
-    let step = this.history.pop();
-    return step.from;
   }
 }
 
