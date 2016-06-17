@@ -6,26 +6,28 @@ var clc = require('cli-color'),
   mazeHeight = maze.length,
   mazeWidth = maze[0].length,
   start = mazeData.start,
-  paths = {};
+  paths = {},
+  sleep = require('sleep');
 
 var nextStep = (x, y) => {
+  print(x, y);
   let available = false;
 
   if (maze[y][x] === 0) {
     paths[x + '-' + y] = { x: x, y: y};
 
+    maze[y][x] = 2;
     if (x === 0 || y === 0 || x === mazeWidth - 1 || y === mazeHeight - 1) {
       return false;
     }
 
-    maze[y][x] = 2;
-    if (nextStep(x + 1, y)) {
+    if (maze[y][x+1] !==2 && nextStep(x + 1, y)) {
       available = true;
-    } else if (nextStep(x, y + 1)) {
+    } else if (maze[y+1][x] !==2 && nextStep(x, y + 1)) {
       available = true;
-    } else if (nextStep(x - 1, y)) {
+    } else if (maze[y][x-1] !==2 && nextStep(x - 1, y)) {
       available = true;
-    } else if (nextStep(x, y - 1)) {
+    } else if (maze[y-1][x] !==2 && nextStep(x, y - 1)) {
       available = true;
     }
   }
@@ -33,36 +35,45 @@ var nextStep = (x, y) => {
   return available;
 };
 
-console.time('step');
-nextStep(start.x, start.y);
-console.timeEnd('step');
+var run = () => {
+  process.stdout.write(clc.reset);
+  nextStep(start.x, start.y);
+};
 
-var map = '';
-for (let y = 0; y < mazeHeight; y++) {
-  let row = '';
-  for (let x = 0; x < mazeWidth; x++) {
-    let value = maze[y][x];
-    if (x === start.x && y === start.y) {
-      value = clc.red('S');
-    } else {
-      if (paths[x + '-' + y]) {
-        if (x === 0 || y === 0 || x === mazeWidth - 1 || y === mazeHeight - 1) {
-          value = clc.green('X');
-        } else {
-          value = clc.green('.');
-        }
+var print = (curX, curY) => {
+  if (curY >= mazeHeight || maze[curY][curX] === 1) {
+    return;
+  }
+
+  var map = '';
+  for (let y = 0; y < mazeHeight; y++) {
+    let row = '';
+    for (let x = 0; x < mazeWidth; x++) {
+      let value = maze[y][x];
+      if (x === curX && y === curY) {
+        value = '@';
+      } else if (x === start.x && y === start.y) {
+        value = clc.red('S');
       } else {
-        if (value === 2 || value === 0) {
-          value = ' ';
-        } else {
+        if (value === 2 &&
+          (x === 0 || y === 0 || x === mazeWidth - 1 || y === mazeHeight - 1)) {
+          value = clc.green('X');
+        } else if (value === 1) {
           value = '*';
+        } else {
+          value = ' ';
         }
       }
+
+      row += value + ' ';
     }
-
-    row += value + ' ';
+    map += row + '\n';
   }
-  map += row + '\n';
-}
 
-console.log(map);
+  process.stdout.write(clc.move.to(0, 0));
+  console.log('current position: ' + curX + '-' + curY + '   ');
+  console.log(map);
+  sleep.usleep(1000000);
+};
+
+run();

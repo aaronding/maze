@@ -12,7 +12,8 @@ class Game {
     var maze = this.maze,
       mouse = this.mouse;
 
-    process.stdout.write(require('cli-color').move.to(0, 0));
+    process.stdout.write(clc.reset);
+    //process.stdout.write(require('cli-color').move.to(0, 0));
 
     while (true) {
       let direction = mouse.findNextStep(maze.getAvailableDirections(mouse.currentPosition));
