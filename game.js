@@ -31,7 +31,7 @@ class Game {
         }
       }
 
-      sleep.usleep(1000000);
+      sleep.sleep(0);
       this.print(this.maze);
     }
   }
@@ -47,6 +47,8 @@ class Game {
 
     process.stdout.write(clc.move.to(0, 0));
 
+    let lastStep = mouse.getLastStep();
+    map = lastStep.id + ':' + lastStep.type + ' to ' + lastStep.dir + '\n';
     for (let y = 0; y < mazeHeight; y++) {
       let row = '';
       for (let x = 0; x < mazeWidth; x++) {
@@ -59,11 +61,11 @@ class Game {
           if (value === 0) {
             value = ' ';
           } else {
-            value = '\u2591';
+            value = '\u2593';
           }
         }
 
-        row += value + '';
+        row += value;
       }
       map += row + '\n';
     }

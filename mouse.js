@@ -25,6 +25,7 @@ class Mouse {
 
     this.history.push(direction);
     this.traces.push({
+      id: this.traces.length,
       dir: direction,
       type: 'go'
     });
@@ -35,6 +36,7 @@ class Mouse {
     if (dir) {
       this.currentPosition = this.getNextPosition(this.currentPosition, this.getOppositeDirection(dir));
       this.traces.push({
+        id: this.traces.length,
         dir: dir,
         type: 'back'
       });
@@ -79,6 +81,10 @@ class Mouse {
     } else if (direction === 'n') {
       return 's'
     }
+  }
+
+  getLastStep() {
+    return this.traces[this.traces.length-1];
   }
 }
 
