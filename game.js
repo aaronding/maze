@@ -1,6 +1,9 @@
 var Maze = require('./maze.js'),
   Mouse = require('./mouse.js'),
+  EventEmitter = require('events');
   sleep = require('sleep');
+
+class PaintEvent extends EventEmitter { }
 
 class Game {
   constructor(maze, start) {
@@ -9,8 +12,11 @@ class Game {
   }
 
   start() {
-    var maze = this.maze,
-      mouse = this.mouse;
+    let maze = this.maze,
+      mouse = this.mouse,
+      event = new PaintEvent();
+
+    event.on('repaint', () => this.print());
 
     process.stdout.write(require('cli-color').reset);
     //process.stdout.write(require('cli-color').move.to(0, 0));
@@ -31,13 +37,14 @@ class Game {
         }
       }
 
-      sleep.sleep(0);
-      this.print(this.maze);
+      sleep.usleep(100000);
+      event.emit('repaint');
     }
   }
 
-  print(maze) {
-    let mazeHeight = maze.getHeight(),
+  print() {
+    let maze = this.maze,
+      mazeHeight = maze.getHeight(),
       mazeWidth = maze.getWidth(),
       matrix = maze.matrix,
       start = maze.start,
@@ -48,20 +55,20 @@ class Game {
     process.stdout.write(clc.move.to(0, 0));
 
     let lastStep = mouse.getLastStep();
-    map = lastStep.id + ':' + lastStep.type + ' to ' + lastStep.dir + '\n';
+    map = lastStep.id + ': ' + lastStep.type + ' to ' + lastStep.dir + '\n';
     for (let y = 0; y < mazeHeight; y++) {
       let row = '';
       for (let x = 0; x < mazeWidth; x++) {
         let value = matrix[y][x];
         if (x === start.x && y === start.y) {
-          value = clc.red('S');
+          value = clc.red('\u2605 ');
         } else if (x === mouse.currentPosition.x+start.x && y === mouse.currentPosition.y + start.y) {
-          value = clc.greenBright('@');
+          value = clc.greenBright('\uD83D\uDC2D ');
         } else {
           if (value === 0) {
-            value = ' ';
+            value = '  ';
           } else {
-            value = '\u2593';
+            value = '\u2593\u2593';
           }
         }
 
