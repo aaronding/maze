@@ -49,7 +49,7 @@ class Game {
       matrix = maze.matrix,
       start = maze.start,
       mouse = this.mouse,
-      map = '',
+      map,
       clc = require('cli-color');
 
     process.stdout.write(clc.move.to(0, 0));
