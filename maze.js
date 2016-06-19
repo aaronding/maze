@@ -15,6 +15,10 @@ class Maze {
     return this.mazeHeight;
   }
 
+  getValue(x, y) {
+    return this.matrix[y][x];
+  }
+
   isExit(currentPosition) {
     var x = currentPosition.x + this.start.x,
       y = currentPosition.y + this.start.y;
@@ -41,6 +45,35 @@ class Maze {
       ret.push('n');
     }
     return ret;
+  }
+
+  print(curX, curY) {
+    let mazeHeight = this.getHeight(),
+      mazeWidth = this.getWidth(),
+      start = this.start,
+      map = '';
+
+    for (let y = 0; y < mazeHeight; y++) {
+      let row = '';
+      for (let x = 0; x < mazeWidth; x++) {
+        let value = this.getValue(x, y);
+        if (x === start.x && y === start.y) {
+          value = '\u2605 ';
+        } else if (x === curX + start.x && y === curY + start.y) {
+          value = '\uD83D\uDC2D ';
+        } else {
+          if (value === 0) {
+            value = '  ';
+          } else {
+            value = '\u2593\u2593';
+          }
+        }
+
+        row += value;
+      }
+      map += row + '\n';
+    }
+    return map;
   }
 }
 
