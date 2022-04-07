@@ -3,7 +3,7 @@ class Mouse {
     this.traces = [];
     this.history = [];
 
-    this.currentPosition = {x: 0, y: 0};
+    this.currentPosition = { x: 0, y: 0 };
     this.visited = ['0-0'];
 
     this.exit = [];
@@ -17,6 +17,7 @@ class Mouse {
         return dir;
       }
     }
+    return undefined;
   }
 
   go(direction) {
@@ -67,8 +68,8 @@ class Mouse {
     return ret;
   }
 
-  hasVisitied(position) {
-    return this.visited.indexOf(position.x + '-' + position.y) > -1;
+  hasVisitied({ x, y }) {
+    return this.visited.indexOf(x + '-' + y) > -1;
   }
 
   getOppositeDirection(direction) {
