@@ -20,7 +20,7 @@ class Maze {
   }
 
   isExit(currentPosition) {
-    var x = currentPosition.x + this.start.x,
+    const x = currentPosition.x + this.start.x,
       y = currentPosition.y + this.start.y;
 
     return x === 0 || y === 0 ||
@@ -28,7 +28,7 @@ class Maze {
   }
 
   getAvailableDirections(position) {
-    var matrix = this.matrix,
+    const matrix = this.matrix,
       x = this.start.x + position.x,
       y = this.start.y + position.y,
       ret = [];
@@ -48,10 +48,11 @@ class Maze {
   }
 
   print(curX, curY) {
-    let mazeHeight = this.getHeight(),
+    const mazeHeight = this.getHeight(),
       mazeWidth = this.getWidth(),
-      start = this.start,
-      map = '';
+      start = this.start;
+
+    let map = '';
 
     for (let y = 0; y < mazeHeight; y++) {
       let row = '';
@@ -60,7 +61,7 @@ class Maze {
         if (x === start.x && y === start.y) {
           value = '\u2605 ';
         } else if (x === curX + start.x && y === curY + start.y) {
-          value = '\uD83D\uDC2D ';
+          value = '\uD83D\uDC2D';
         } else {
           if (value === 0) {
             value = '  ';

@@ -1,8 +1,12 @@
-var Maze = require('./maze.js'),
+const Maze = require('./maze.js'),
   Mouse = require('./mouse.js'),
   EventEmitter = require('events');
 
 class PaintEvent extends EventEmitter { }
+
+function next(fn) {
+  return fn().then(() => next(fn), (resolve, reject) => reject());
+}
 
 class Game {
   constructor(maze, start) {
@@ -11,21 +15,13 @@ class Game {
   }
 
   start() {
-    let maze = this.maze,
+    const maze = this.maze,
       mouse = this.mouse,
       event = new PaintEvent();
 
     event.on('repaint', () => this.print());
 
     process.stdout.write('[2J[0;0H');
-
-    function next(fn) {
-      return fn().then(() => {
-        return next(fn);
-      }, (resolve, reject) => {
-        reject();
-      });
-    }
 
     next(() => {
       return new Promise((resolve, reject) => {
@@ -54,8 +50,8 @@ class Game {
   }
 
   print() {
-    let mouse = this.mouse;
-    let lastStep = mouse.getLastStep();
+    const mouse = this.mouse;
+    const lastStep = mouse.getLastStep();
     let map = lastStep.id + ': ' + lastStep.type + ' to ' + lastStep.dir + '      \n';
 
     map += this.maze.print(mouse.currentPosition.x, mouse.currentPosition.y);

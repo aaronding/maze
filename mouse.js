@@ -11,8 +11,8 @@ class Mouse {
 
   findNextStep(availableDirections) {
     for (let i=0; i<availableDirections.length; i++) {
-      let dir = availableDirections[i];
-      let next = this.getNextPosition(this.currentPosition, dir);
+      const dir = availableDirections[i];
+      const next = this.getNextPosition(this.currentPosition, dir);
       if (!this.hasVisitied(next)) {
         return dir;
       }
@@ -32,12 +32,12 @@ class Mouse {
   }
 
   back() {
-    let dir = this.history.pop();
+    const dir = this.history.pop();
     if (dir) {
       this.currentPosition = this.getNextPosition(this.currentPosition, this.getOppositeDirection(dir));
       this.traces.push({
         id: this.traces.length,
-        dir: dir,
+        dir,
         type: 'back'
       });
     }
@@ -49,7 +49,7 @@ class Mouse {
   }
 
   getNextPosition(position, direction) {
-    var ret = {
+    const ret = {
       x: position.x,
       y: position.y
     };
@@ -72,19 +72,17 @@ class Mouse {
   }
 
   getOppositeDirection(direction) {
-    if (direction === 'e') {
-      return 'w'
-    } else if (direction === 'w') {
-      return 'e'
-    } else if (direction === 's') {
-      return 'n'
-    } else if (direction === 'n') {
-      return 's'
-    }
+    const dir = {
+      e: 'w',
+      w: 'e',
+      s: 'n',
+      n: 's'
+    };
+    return dir[direction]
   }
 
   getLastStep() {
-    return this.traces[this.traces.length-1];
+    return this.traces[this.traces.length - 1];
   }
 }
 
