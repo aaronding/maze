@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/aaronding/maze#readme",
   "dependencies": {
-    "cli-color": "^2.0.2",
+    "cli-color": "^2.0.4",
     "sleep": "^6.3.0"
   }
 }
