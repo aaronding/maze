@@ -1,8 +1,8 @@
 {
   "name": "maze",
   "version": "1.0.0",
-  "description": "",
-  "main": "maze.js",
+  "description": "Terminal animation of a mouse solving a maze with depth-first search and backtracking",
+  "main": "app.js",
   "scripts": {
     "go": "node app",
     "test": "jest",
@@ -12,8 +12,8 @@
     "type": "git",
     "url": "git+https://github.com/aaronding/maze.git"
   },
-  "author": "",
-  "license": "ISC",
+  "author": "Aaron Ding",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/aaronding/maze/issues"
   },
@@ -29,5 +29,14 @@
   },
   "resolutions": {
     "es5-ext": "^0.10.63"
-  }
+  },
+  "keywords": [
+    "maze",
+    "maze-solver",
+    "backtracking",
+    "depth-first-search",
+    "algorithm",
+    "terminal",
+    "cli"
+  ]
 }
