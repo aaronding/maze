@@ -5,7 +5,8 @@
   "main": "maze.js",
   "scripts": {
     "go": "node app",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest",
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -17,6 +18,12 @@
     "url": "https://github.com/aaronding/maze/issues"
   },
   "homepage": "https://github.com/aaronding/maze#readme",
+  "jest": {
+    "testEnvironment": "node"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
   "dependencies": {
     "cli-color": "^2.0.4",
     "sleep": "^6.3.0"
