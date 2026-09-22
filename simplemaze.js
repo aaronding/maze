@@ -1,5 +1,4 @@
-const clc = require('cli-color'),
-  sleep = require('sleep');
+const clc = require('cli-color');
 
 const mazeData = require('./mazeData.js'),
   maze = mazeData.maze,
@@ -72,7 +71,8 @@ const print = (curX, curY) => {
   process.stdout.write(clc.move.to(0, 0));
   console.log('current position: ' + curX + '-' + curY + '   ');
   console.log(map);
-  sleep.usleep(1000000);
+  // Block for 1s between frames
+  Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, 1000);
 };
 
 run();
