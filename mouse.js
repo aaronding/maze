@@ -4,7 +4,7 @@ class Mouse {
     this.history = [];
 
     this.currentPosition = { x: 0, y: 0 };
-    this.visited = ['0-0'];
+    this.visited = new Set(['0-0']);
 
     this.exit = [];
   }
@@ -13,7 +13,7 @@ class Mouse {
     for (let i=0; i<availableDirections.length; i++) {
       const dir = availableDirections[i];
       const next = this.getNextPosition(this.currentPosition, dir);
-      if (!this.hasVisitied(next)) {
+      if (!this.hasVisited(next)) {
         return dir;
       }
     }
@@ -22,7 +22,7 @@ class Mouse {
 
   go(direction) {
     this.currentPosition = this.getNextPosition(this.currentPosition, direction);
-    this.visited.push(this.currentPosition.x + '-' + this.currentPosition.y);
+    this.visited.add(this.currentPosition.x + '-' + this.currentPosition.y);
 
     this.history.push(direction);
     this.traces.push({
@@ -68,8 +68,8 @@ class Mouse {
     return ret;
   }
 
-  hasVisitied({ x, y }) {
-    return this.visited.indexOf(x + '-' + y) > -1;
+  hasVisited({ x, y }) {
+    return this.visited.has(x + '-' + y);
   }
 
   getOppositeDirection(direction) {
@@ -79,7 +79,7 @@ class Mouse {
       s: 'n',
       n: 's'
     };
-    return dir[direction]
+    return dir[direction];
   }
 
   getLastStep() {

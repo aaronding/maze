@@ -7,7 +7,7 @@ describe('Mouse movement', () => {
     expect(m.currentPosition).toEqual({ x: 0, y: 0 });
     m.go('e');
     expect(m.currentPosition).toEqual({ x: 1, y: 0 });
-    expect(m.hasVisitied({ x: 1, y: 0 })).toBe(true);
+    expect(m.hasVisited({ x: 1, y: 0 })).toBe(true);
 
     m.back();
     expect(m.currentPosition).toEqual({ x: 0, y: 0 });
