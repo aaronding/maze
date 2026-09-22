@@ -1,6 +1,6 @@
 const clc = require('cli-color');
 
-const mazeData = require('./mazeData.js'),
+const mazeData = require('../mazeData.js'),
   maze = mazeData.maze,
   mazeHeight = maze.length,
   mazeWidth = maze[0].length,
